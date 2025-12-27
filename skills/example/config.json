@@ -1,5 +1,10 @@
 {
   "name": "example",
-  "path": "/path/to/example-project",
-  "enabled": false
+  "path": "/Users/wchiu/Documents/GitHub/agent-plane",
+  "enabled": true,
+  "provider": "claude",
+  "schedule": {
+    "cron": "*/15 * * * *",
+    "times": 1
+  }
 }

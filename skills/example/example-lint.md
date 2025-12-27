@@ -1,14 +1,21 @@
 ---
 name: example-lint
-description: Run linting on example project and fix all issues. Use when working in the example project and need to check code quality.
+description: Run Python linting with ruff and fix any issues.
 ---
 
-# Example Lint
+# Python Lint
 
-Run linting and fix all issues.
+Run ruff linter and fix code style issues.
 
-## Command
+## Commands
 
 ```bash
-npm run lint
+# Check for issues
+uv run ruff check .
+
+# Auto-fix issues
+uv run ruff check --fix .
+
+# Format code
+uv run ruff format .
 ```

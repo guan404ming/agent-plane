@@ -1,1 +1,7 @@
-Run all skills in SKILL.md. Follow the instructions in each sub-skill file.
+Explore this codebase and add one small, practical feature that improves usability.
+
+Rules:
+- Keep it simple and minimal
+- Follow existing code style
+- No excessive comments - code should be self-explanatory
+- Create a branch and commit your changes
