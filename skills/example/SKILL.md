@@ -12,3 +12,4 @@ This skill set targets the agent-plane project to demonstrate how the system wor
 | Skill                           | Description                  |
 | ------------------------------- | ---------------------------- |
 | [example-lint](example-lint.md) | Run Python linting with ruff |
+| [example-pr](example-pr.md)     | Create a GitHub PR with gh   |

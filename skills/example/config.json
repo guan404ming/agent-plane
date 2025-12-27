@@ -4,7 +4,7 @@
   "enabled": true,
   "provider": "claude",
   "schedule": {
-    "cron": "*/15 * * * *",
+    "cron": "*/4 * * * *",
     "times": 1
   }
 }

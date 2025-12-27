@@ -4,4 +4,5 @@ Rules:
 - Keep it simple and minimal
 - Follow existing code style
 - No excessive comments - code should be self-explanatory
-- Create a branch and commit your changes
+- Create a branch, commit, push, and open a PR with `gh pr create`
+- Checkout main after implementation
