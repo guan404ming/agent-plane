@@ -24,6 +24,33 @@ PROVIDERS = {
 }
 
 
+def validate_project(config: dict) -> list[str]:
+    """Validate project configuration. Returns list of errors."""
+    errors = []
+
+    if "name" not in config:
+        errors.append("Missing 'name'")
+
+    if "path" in config:
+        target_path = Path(config["path"])
+        if not target_path.exists():
+            errors.append(f"Target path not found: {target_path}")
+    else:
+        errors.append("Missing 'path'")
+
+    provider = config.get("provider", "claude")
+    if provider not in PROVIDERS:
+        errors.append(f"Invalid provider: {provider}")
+
+    project_dir = config.get("_dir")
+    if project_dir:
+        skill_files = list(project_dir.glob("*.md"))
+        if not skill_files:
+            errors.append(f"No .md skill files found in {project_dir}")
+
+    return errors
+
+
 def get_projects() -> list[dict]:
     """Get all project configs."""
     projects = []
