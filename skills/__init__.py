@@ -38,7 +38,7 @@ def get_projects() -> list[dict]:
     return projects
 
 
-def run_project(config: dict):
+def run_project(config: dict, dry_run: bool = False):
     """Run skills for a project."""
     if not config.get("enabled"):
         return
@@ -60,6 +60,16 @@ def run_project(config: dict):
         prompt = template.render()
 
     skill_files = list(project_dir.glob("*.md"))
+    cmd = [arg.replace("{prompt}", prompt) for arg in PROVIDERS[provider]]
+
+    if dry_run:
+        print(f"[DRY RUN] Would copy files to {target_path}:")
+        for skill_file in skill_files:
+            print(f"  - {skill_file.name}")
+        print(f"[DRY RUN] Would run command in {target_path}:")
+        print(f"  {' '.join(cmd)}")
+        return
+
     copied = []
 
     try:
@@ -68,7 +78,6 @@ def run_project(config: dict):
             shutil.copy(skill_file, dest)
             copied.append(dest)
 
-        cmd = [arg.replace("{prompt}", prompt) for arg in PROVIDERS[provider]]
         print(f"Running {provider} on {config['name']}")
         result = subprocess.run(
             cmd,
