@@ -1,0 +1,11 @@
+[project]
+name = "claude-flow"
+version = "0.1.0"
+description = "Claude workflow automation"
+requires-python = ">=3.12"
+dependencies = [
+    "apscheduler>=3.11.2",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.14.10"]

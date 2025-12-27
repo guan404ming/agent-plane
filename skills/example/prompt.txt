@@ -1,0 +1,1 @@
+Run all skills in SKILL.md. Follow the instructions in each sub-skill file.

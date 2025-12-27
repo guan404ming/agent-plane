@@ -1,0 +1,10 @@
+{
+  "name": "tvm",
+  "path": "/Users/wchiu/Documents/GitHub/tvm",
+  "enabled": true,
+  "provider": "gemini",
+  "schedule": {
+    "cron": "0 14 * * *",
+    "times": 1
+  }
+}
