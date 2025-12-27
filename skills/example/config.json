@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "path": "/Users/wchiu/Documents/GitHub/agent-plane",
+  "path": ".",
   "enabled": true,
   "provider": "gemini",
   "schedule": {

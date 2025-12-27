@@ -1,6 +1,6 @@
 {
   "name": "tvm",
-  "path": "/Users/wchiu/Documents/GitHub/tvm",
+  "path": "../tvm",
   "enabled": true,
   "provider": "gemini",
   "schedule": {

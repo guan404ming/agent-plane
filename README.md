@@ -8,18 +8,13 @@ Define, Schedule and Run.
 ## Quick Start
 
 ```bash
-# 0. Install dependencies
+# 1. Install dependencies
 uv sync
-
-# 1. Create a skill
-mkdir -p skills/my-project
-echo '{"name":"my-project","path":"/path/to/repo","enabled":true,"provider":"claude"}' > skills/my-project/config.json
-echo 'Fix all TODO comments in the codebase' > skills/my-project/prompt.jinja
 
 # 2. Run once
 make run
 
-# 3. Or schedule it
+# 3. Or start the scheduler
 make start
 ```
 
