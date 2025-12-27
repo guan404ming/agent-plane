@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """Run Claude skills with APScheduler based on config schedules."""
 
-import signal
 import sys
 from datetime import datetime, timezone
-
-# Unbuffered output for logging
-sys.stdout.reconfigure(line_buffering=True)
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from skills import get_projects, run_project
+
+# Unbuffered output for logging
+sys.stdout.reconfigure(line_buffering=True)
 
 
 def run_project_n_times(config: dict):
@@ -62,15 +61,6 @@ def main():
         print("No scheduled jobs found. Exiting.")
         return
 
-    def shutdown(signum, frame):
-        print("\nShutting down scheduler...")
-        scheduler.shutdown()
-        sys.exit(0)
-
-    signal.signal(signal.SIGINT, shutdown)
-    signal.signal(signal.SIGTERM, shutdown)
-
-    print("Scheduler started. Press Ctrl+C to exit.")
     scheduler.start()
 
 
