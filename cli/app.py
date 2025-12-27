@@ -18,7 +18,9 @@ def main():
         print("Available projects:")
         for p in projects:
             status = "enabled" if p.get("enabled") else "disabled"
-            print(f"- {p['name']} ({status})")
+            provider = p.get("provider", "claude")
+            schedule = p.get("schedule", {}).get("cron", "no schedule")
+            print(f"- {p['name']} ({status}) [{provider}] {schedule}")
         return
 
     if args.project:
