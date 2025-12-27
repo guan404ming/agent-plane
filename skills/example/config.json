@@ -2,7 +2,7 @@
   "name": "example",
   "path": "/Users/wchiu/Documents/GitHub/agent-plane",
   "enabled": true,
-  "provider": "claude",
+  "provider": "gemini",
   "schedule": {
     "cron": "*/4 * * * *",
     "times": 1
