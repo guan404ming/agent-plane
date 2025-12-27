@@ -1,0 +1,21 @@
+Explore this codebase and add one small, practical feature that improves usability.
+Keep root clean put code in sub folder.
+
+{% include '_common.jinja' %}
+
+use pr tool to open pr follow the example template below
+
+example:
+```
+## PR Title
+
+## Why
+
+PyTorch uses int_oo (IntInfinity) for unbounded constraints, which would make our current implementation crash
+
+## How
+
+- Update the type hint for `create_input_vars` to allow for optional upper bounds.
+- Modify the logic to handle unbounded constraints by setting upper bounds to None when applicable.
+- Add a new test case
+```

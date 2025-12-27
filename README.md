@@ -14,7 +14,7 @@ uv sync
 # 1. Create a skill
 mkdir -p skills/my-project
 echo '{"name":"my-project","path":"/path/to/repo","enabled":true,"provider":"claude"}' > skills/my-project/config.json
-echo 'Fix all TODO comments in the codebase' > skills/my-project/prompt.txt
+echo 'Fix all TODO comments in the codebase' > skills/my-project/prompt.jinja
 
 # 2. Run once
 make run
@@ -36,11 +36,13 @@ make run     # Run once
 ## Skills Folder Structure
 
 ```
-skills/<project>/
-├── config.json
-├── prompt.txt
-├── SKILL.md
-└── *.md
+skills/
+├── _common.jinja        # Shared prompt blocks
+└── <project>/
+    ├── config.json
+    ├── prompt.jinja
+    ├── SKILL.md
+    └── *.md
 ```
 
 ## Config

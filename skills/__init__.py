@@ -6,6 +6,8 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+from jinja2 import Environment, FileSystemLoader
+
 SKILLS_DIR = Path(__file__).parent
 LOGS_DIR = SKILLS_DIR.parent / "logs"
 
@@ -49,8 +51,13 @@ def run_project(config: dict):
         print(f"Path not found: {target_path}")
         return
 
-    prompt_file = project_dir / "prompt.txt"
-    prompt = prompt_file.read_text() if prompt_file.exists() else ""
+    prompt = ""
+    prompt_file = project_dir / "prompt.jinja"
+
+    if prompt_file.exists():
+        env = Environment(loader=FileSystemLoader(SKILLS_DIR))
+        template = env.get_template(f"{project_dir.name}/prompt.jinja")
+        prompt = template.render()
 
     skill_files = list(project_dir.glob("*.md"))
     copied = []

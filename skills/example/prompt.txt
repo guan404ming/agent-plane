@@ -1,8 +1,0 @@
-Explore this codebase and add one small, practical feature that improves usability.
-
-Rules:
-- Keep it simple and minimal
-- Follow existing code style
-- No excessive comments - code should be self-explanatory
-- Create a branch, commit, push, and open a PR with `gh pr create`
-- Checkout main after implementation
