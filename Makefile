@@ -1,4 +1,4 @@
-.PHONY: start stop status restart logs run
+.PHONY: start stop status restart logs run list
 
 PID_FILE := .scheduler.pid
 LOG_FILE := scheduler.log
@@ -43,3 +43,6 @@ logs:
 
 run:
 	uv run python main.py
+
+list:
+	@uv run python list_projects.py
