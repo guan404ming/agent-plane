@@ -1,7 +1,7 @@
 {
   "name": "example",
   "path": ".",
-  "enabled": true,
+  "enabled": false,
   "provider": "gemini",
   "schedule": {
     "cron": "*/15 * * * *",

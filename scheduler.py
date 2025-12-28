@@ -19,16 +19,17 @@ def run_project_n_times(config: dict):
     name = config["name"]
 
     for i in range(times):
-        print(f"[{datetime.now()}] [{name}] Running {i + 1}/{times}")
+        print(f"[{datetime.now().astimezone()}] [{name}] Running {i + 1}/{times}")
         run_project(config)
-        print(f"[{datetime.now()}] [{name}] Completed {i + 1}/{times}")
+        print(f"[{datetime.now().astimezone()}] [{name}] Completed {i + 1}/{times}")
 
 
 def main():
     scheduler = BlockingScheduler()
+    local_tz = datetime.now().astimezone().tzinfo
 
-    print(f"Current local time: {datetime.now()}")
-    print(f"Timezone: {datetime.now().astimezone().tzinfo}")
+    print(f"Current local time: {datetime.now().astimezone()}")
+    print(f"Timezone: {local_tz}")
     print("-" * 50)
 
     for project in get_projects():
@@ -43,7 +44,7 @@ def main():
         if not cron:
             continue
 
-        trigger = CronTrigger.from_crontab(cron)
+        trigger = CronTrigger.from_crontab(cron, timezone=local_tz)
         scheduler.add_job(
             run_project_n_times,
             trigger,
