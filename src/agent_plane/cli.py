@@ -2,7 +2,8 @@
 
 import argparse
 import sys
-from skills import get_projects, run_project
+
+from agent_plane.runner import get_projects, run_project
 
 
 def main():

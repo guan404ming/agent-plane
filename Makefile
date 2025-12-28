@@ -7,7 +7,7 @@ start:
 	@if [ -f $(PID_FILE) ] && kill -0 $$(cat $(PID_FILE)) 2>/dev/null; then \
 		echo "Scheduler already running (PID: $$(cat $(PID_FILE)))"; \
 	else \
-		nohup uv run python scheduler.py > $(LOG_FILE) 2>&1 & echo $$! > $(PID_FILE); \
+		nohup uv run agent-plane-scheduler > $(LOG_FILE) 2>&1 & echo $$! > $(PID_FILE); \
 		echo "Scheduler started (PID: $$(cat $(PID_FILE)))"; \
 		echo "Logs: make logs"; \
 	fi
@@ -42,4 +42,4 @@ logs:
 	tail -f $(LOG_FILE)
 
 run:
-	uv run python main.py
+	uv run agent-plane

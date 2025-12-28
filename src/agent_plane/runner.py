@@ -1,4 +1,4 @@
-"""Skills module."""
+"""Project runner - load and execute skills."""
 
 import json
 import shutil
@@ -8,9 +8,10 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
-from models import ProjectConfig
+from agent_plane.models import ProjectConfig
 
-SKILLS_DIR = Path(__file__).parent
+# Skills directory at project root (outside src/)
+SKILLS_DIR = Path(__file__).parent.parent.parent / "skills"
 LOGS_DIR = SKILLS_DIR.parent / "logs"
 
 PROVIDERS = {

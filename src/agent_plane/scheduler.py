@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-"""Run Claude skills with APScheduler based on config schedules."""
+"""Run skills with APScheduler based on config schedules."""
 
 import sys
 from datetime import datetime, timezone
@@ -7,8 +6,8 @@ from datetime import datetime, timezone
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from models import ProjectConfig
-from skills import get_projects, run_project
+from agent_plane.models import ProjectConfig
+from agent_plane.runner import get_projects, run_project
 
 # Unbuffered output for logging
 sys.stdout.reconfigure(line_buffering=True)
