@@ -8,6 +8,8 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
+from models import ProjectConfig
+
 SKILLS_DIR = Path(__file__).parent
 LOGS_DIR = SKILLS_DIR.parent / "logs"
 
@@ -24,7 +26,7 @@ PROVIDERS = {
 }
 
 
-def get_projects() -> list[dict]:
+def get_projects() -> list[ProjectConfig]:
     """Get all project configs."""
     projects = []
     for project_dir in SKILLS_DIR.iterdir():
@@ -32,20 +34,21 @@ def get_projects() -> list[dict]:
             continue
         config_file = project_dir / "config.json"
         if config_file.exists():
-            config = json.loads(config_file.read_text())
-            config["_dir"] = project_dir
+            data = json.loads(config_file.read_text())
+            config = ProjectConfig(**data)
+            config.dir = project_dir
             projects.append(config)
     return projects
 
 
-def run_project(config: dict, dry_run: bool = False):
+def run_project(config: ProjectConfig, dry_run: bool = False):
     """Run skills for a project."""
-    if not config.get("enabled"):
+    if not config.enabled:
         return
 
-    project_dir = config["_dir"]
-    target_path = Path(config["path"])
-    provider = config.get("provider", "claude")
+    project_dir = config.dir
+    target_path = Path(config.path)
+    provider = config.provider
 
     if not target_path.exists():
         print(f"Path not found: {target_path}")
@@ -78,7 +81,7 @@ def run_project(config: dict, dry_run: bool = False):
             shutil.copy(skill_file, dest)
             copied.append(dest)
 
-        print(f"Running {provider} on {config['name']}")
+        print(f"Running {provider} on {config.name}")
         result = subprocess.run(
             cmd,
             cwd=target_path,
@@ -89,7 +92,7 @@ def run_project(config: dict, dry_run: bool = False):
         # Save output
         LOGS_DIR.mkdir(exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = LOGS_DIR / f"{config['name']}_{provider}_{timestamp}.log"
+        log_file = LOGS_DIR / f"{config.name}_{provider}_{timestamp}.log"
         log_file.write_text(result.stdout + result.stderr)
         print(f"Output saved to {log_file}")
 

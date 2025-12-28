@@ -17,14 +17,12 @@ def main():
     if args.list:
         print("Available projects:")
         for p in projects:
-            status = "enabled" if p.get("enabled") else "disabled"
-            provider = p.get("provider", "claude")
-            schedule = p.get("schedule", {}).get("cron", "no schedule")
-            print(f"- {p['name']} ({status}) [{provider}] {schedule}")
+            status = "enabled" if p.enabled else "disabled"
+            print(f"- {p.name} ({status}) [{p.provider}] {p.schedule.cron}")
         return
 
     if args.project:
-        projects = [p for p in projects if p["name"] == args.project]
+        projects = [p for p in projects if p.name == args.project]
         if not projects:
             print(f"Project '{args.project}' not found.")
             sys.exit(1)
