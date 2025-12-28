@@ -208,3 +208,7 @@ __marimo__/
 
 # Apscheduler
 .scheduler.pid
+
+# Skills - ignore all except example
+skills/*/
+!skills/example/
