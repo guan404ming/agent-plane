@@ -75,12 +75,28 @@ def run_project(config: ProjectConfig, dry_run: bool = False):
         return
 
     copied = []
+    backed_up = {}  # Files to restore: {dest_path: backup_path}
 
     try:
-        for skill_file in skill_files:
-            dest = target_path / skill_file.name
-            shutil.copy(skill_file, dest)
-            copied.append(dest)
+        # Build list of (source, dest) pairs
+        files_to_copy = [(skill_file, target_path / skill_file.name) for skill_file in skill_files]
+
+        # If AGENTS.md exists, also copy to CLAUDE.md
+        agents_file = next((f for f in skill_files if f.name == "AGENTS.md"), None)
+        if agents_file:
+            files_to_copy.append((agents_file, target_path / "CLAUDE.md"))
+
+        # Copy all files with backup logic
+        for source, dest in files_to_copy:
+            if dest.exists():
+                # Backup existing file
+                backup_path = target_path / f".{dest.name}.backup"
+                shutil.copy(dest, backup_path)
+                backed_up[dest] = backup_path
+            else:
+                # Will need to delete this file later
+                copied.append(dest)
+            shutil.copy(source, dest)
 
         print(f"Running {provider} on {config.name}")
         result = subprocess.run(
@@ -98,5 +114,9 @@ def run_project(config: ProjectConfig, dry_run: bool = False):
         print(f"Output saved to {log_file}")
 
     finally:
+        # Restore backed up files
+        for dest, backup in backed_up.items():
+            shutil.move(backup, dest)
+        # Delete copied files
         for f in copied:
             f.unlink(missing_ok=True)
