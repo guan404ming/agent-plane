@@ -37,6 +37,8 @@ Agent Plane automates AI agent workflows by scheduling and running skills agains
 
 - `skills/<project>/config.json` - Project configuration (validated by Pydantic)
 - `skills/<project>/prompt.jinja` - Optional Jinja2 prompt template
-- `skills/<project>/*.md` and `skills/<project>/SKILL.md` - Skill files temporarily copied to target repo during execution
+- `skills/<project>/SKILL.md` - Index of available skills
+- `skills/<project>/AGENTS.md` - README for agents
+- `skills/<project>/*.md` - Individual skill definitions with instructions for AI provider
 
 **Providers:** Configured in `PROVIDERS` dict in `runner.py`. Currently supports `claude` and `gemini` CLI tools.
