@@ -109,9 +109,19 @@ def run_project(config: ProjectConfig, dry_run: bool = False):
         # Save output
         LOGS_DIR.mkdir(exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = LOGS_DIR / f"{config.name}_{provider}_{timestamp}.log"
-        log_file.write_text(result.stdout + result.stderr)
+        log_content = result.stdout + result.stderr
+        log_filename = f"{config.name}_{provider}_{timestamp}.log"
+
+        # Save to central logs directory
+        log_file = LOGS_DIR / log_filename
+        log_file.write_text(log_content)
+
+        # Also save to target working folder
+        working_log = target_path / log_filename
+        working_log.write_text(log_content)
+
         print(f"Output saved to {log_file}")
+        print(f"Output also saved to {working_log}")
 
     finally:
         # Restore backed up files
