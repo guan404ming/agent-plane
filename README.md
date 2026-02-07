@@ -1,70 +1,45 @@
-# 🤖 Agent Plane
+# Agent Plane
 
-[![Python 3.12](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
-[![License: Apache](https://img.shields.io/badge/License-apache-yellow.svg)](https://opensource.org/license/apache-2-0)
-
-Define, Schedule and Run.
+Schedule and run AI agent skills against target repositories.
 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
 uv sync
-
-# 2. Run once
-make run
-
-# 3. Or start the scheduler
-make start
-```
-
-## Usage
-
-```bash
-make start   # Start scheduler
-make stop    # Stop scheduler
-make status  # Check status
-make logs    # View logs
-make run     # Run once
-```
-
-## Skills Folder Structure
-
-```
-skills/
-├── _common.jinja        # Shared prompt blocks
-└── <project>/
-    ├── config.json
-    ├── prompt.jinja
-    ├── SKILL.md
-    └── *.md
+uv run agent-plane --setup      # Install skills via openskills
+uv run agent-plane --list       # List jobs
+uv run agent-plane -p tvm       # Run a job
+uv run agent-plane --dry-run    # Simulate
+make start                      # Start scheduler
+make stop                       # Stop scheduler
 ```
 
 ## Config
 
-`skills/<project>/config.json`:
+`jobs.json` (or `jobs.local.json` for per-machine override):
 
 ```json
 {
-  "name": "project-name",
-  "path": "/path/to/repo",
-  "enabled": true,
-  "provider": "claude",
-  "schedule": {
-    "cron": "0 14 * * *",
-    "times": 1
-  }
+  "skills_repo": "guan404ming/claude-code-skills",
+  "email": { "to": "you@gmail.com" },
+  "jobs": [
+    {
+      "name": "tvm",
+      "skill": "tvm-dev",
+      "path": "../tvm",
+      "enabled": true,
+      "schedule": { "cron": "0 4 * * *", "times": 2 }
+    }
+  ]
 }
 ```
 
-| Field            | Description                  |
-| ---------------- | ---------------------------- |
-| `name`           | Project identifier           |
-| `path`           | Path to target repository    |
-| `enabled`        | Enable/disable project       |
-| `provider`       | `claude` or `gemini`         |
-| `schedule.cron`  | Cron expression (local time) |
-| `schedule.times` | Runs per trigger             |
+SMTP credentials in `.env`:
+
+```
+SMTP_USER=you@gmail.com
+SMTP_PASSWORD=your_app_password
+```
 
 ## License
 

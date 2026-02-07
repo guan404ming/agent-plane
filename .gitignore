@@ -209,6 +209,5 @@ __marimo__/
 # Apscheduler
 .scheduler.pid
 
-# Skills - ignore all except example
-skills/*/
-!skills/example/
+# Local job config override
+jobs.local.json

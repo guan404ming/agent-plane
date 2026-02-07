@@ -11,6 +11,7 @@ from pathlib import Path
 from agent_plane.models import Config, EmailConfig, JobConfig
 
 ROOT_DIR = Path(__file__).parent.parent.parent
+JOBS_LOCAL_FILE = ROOT_DIR / "jobs.local.json"
 JOBS_FILE = ROOT_DIR / "jobs.json"
 LOGS_DIR = ROOT_DIR / "logs"
 
@@ -42,7 +43,8 @@ def _load_env():
 def get_config() -> Config:
     """Load config from jobs.json, with smtp_password from .env."""
     _load_env()
-    data = json.loads(JOBS_FILE.read_text())
+    jobs_file = JOBS_LOCAL_FILE if JOBS_LOCAL_FILE.exists() else JOBS_FILE
+    data = json.loads(jobs_file.read_text())
     config = Config(**data)
     if config.email:
         config.email.smtp_user = os.environ.get("SMTP_USER", config.email.smtp_user)
@@ -120,7 +122,7 @@ def run_job(config: JobConfig, dry_run: bool = False):
 
     # Send email notification
     email = get_config().email
-    if email:
+    if email and email.smtp_user and email.smtp_password:
         status = (
             "completed" if proc.returncode == 0 else f"failed (exit {proc.returncode})"
         )
