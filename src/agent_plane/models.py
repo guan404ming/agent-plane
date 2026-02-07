@@ -1,7 +1,5 @@
 """Pydantic models for configuration."""
 
-from typing import Literal
-
 from pydantic import BaseModel
 
 
@@ -20,14 +18,24 @@ class JobConfig(BaseModel):
     path: str
     prompt: str = ""
     enabled: bool = False
-    provider: Literal["claude", "gemini"] = "claude"
     schedule: ScheduleConfig
 
     model_config = {"extra": "forbid"}
+
+
+class EmailConfig(BaseModel):
+    """Gmail SMTP configuration."""
+
+    to: str
+    smtp_user: str = "guanmingchiu@gmail.com"
+    smtp_password: str = ""
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
 
 
 class Config(BaseModel):
     """Top-level configuration."""
 
     skills_repo: str = "guan404ming/claude-code-skills"
+    email: EmailConfig | None = None
     jobs: list[JobConfig]

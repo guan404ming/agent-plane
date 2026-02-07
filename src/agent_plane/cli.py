@@ -30,7 +30,7 @@ def main():
         print("Available jobs:")
         for j in jobs:
             status = "enabled" if j.enabled else "disabled"
-            print(f"- {j.name} /{j.skill} ({status}) [{j.provider}] {j.schedule.cron}")
+            print(f"- {j.name} /{j.skill} ({status}) {j.schedule.cron}")
         return
 
     if args.project:
