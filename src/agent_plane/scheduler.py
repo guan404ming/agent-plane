@@ -8,15 +8,15 @@ from apscheduler.events import EVENT_JOB_ERROR, EVENT_JOB_EXECUTED, EVENT_JOB_MI
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from agent_plane.models import ProjectConfig
-from agent_plane.runner import get_projects, run_project
+from agent_plane.models import JobConfig
+from agent_plane.runner import get_jobs, run_job
 
 # Unbuffered output for logging
 sys.stdout.reconfigure(line_buffering=True)
 
 
-def run_project_n_times(config: ProjectConfig):
-    """Run a project N times based on schedule.times config."""
+def run_job_n_times(config: JobConfig):
+    """Run a job N times based on schedule.times config."""
     times = config.schedule.times
     name = config.name
 
@@ -25,7 +25,7 @@ def run_project_n_times(config: ProjectConfig):
     try:
         for i in range(times):
             print(f"[{datetime.now().astimezone()}] [{name}] Running {i + 1}/{times}")
-            run_project(config)
+            run_job(config)
             print(f"[{datetime.now().astimezone()}] [{name}] Completed {i + 1}/{times}")
         print(f"[{datetime.now().astimezone()}] [{name}] Job finished successfully")
     except Exception as e:
@@ -65,24 +65,23 @@ def main():
     print(f"Timezone: {local_tz}")
     print("-" * 50)
 
-    for project in get_projects():
-        if not project.enabled:
+    for job in get_jobs():
+        if not job.enabled:
             continue
 
-        cron = project.schedule.cron
+        cron = job.schedule.cron
         trigger = CronTrigger.from_crontab(cron, timezone=local_tz)
         scheduler.add_job(
-            run_project_n_times,
+            run_job_n_times,
             trigger,
-            args=[project],
-            id=project.name,
-            name=f"Run {project.name}",
+            args=[job],
+            id=job.name,
+            name=f"Run {job.name}",
             max_instances=1,
         )
-        # Use local time for next_run calculation to match the trigger timezone
         next_run = trigger.get_next_fire_time(None, datetime.now(local_tz))
-        print(f"Scheduled: {project.name}")
-        print(f"  Cron: '{cron}', Times: {project.schedule.times}")
+        print(f"Scheduled: {job.name}")
+        print(f"  Cron: '{cron}', Times: {job.schedule.times}")
         print(f"  Next run: {next_run}")
 
     if not scheduler.get_jobs():

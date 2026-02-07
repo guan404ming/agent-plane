@@ -1,6 +1,6 @@
 """Agent Plane - Claude workflow automation."""
 
-from agent_plane.models import ProjectConfig, ScheduleConfig
-from agent_plane.runner import get_projects, run_project
+from agent_plane.models import Config, JobConfig, ScheduleConfig
+from agent_plane.runner import get_jobs, run_job, setup
 
-__all__ = ["ProjectConfig", "ScheduleConfig", "get_projects", "run_project"]
+__all__ = ["Config", "JobConfig", "ScheduleConfig", "get_jobs", "run_job", "setup"]

@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 uv sync                         # Install dependencies
-uv run agent-plane --list       # List projects
-uv run agent-plane -p <name>    # Run specific project
+uv run agent-plane --setup      # Install skills via openskills
+uv run agent-plane --list       # List jobs
+uv run agent-plane -p <name>    # Run specific job
 uv run agent-plane --dry-run    # Simulate execution
 uv run ruff check               # Lint
 uv run ruff format              # Format
@@ -21,24 +22,21 @@ Agent Plane automates AI agent workflows by scheduling and running skills agains
 
 **Core flow:**
 
-1. `get_projects()` scans `skills/` for project directories with `config.json`
-2. Config is validated via Pydantic models (`ProjectConfig`, `ScheduleConfig`)
-3. `run_project()` copies `*.md` skill files to target repo, runs provider CLI, then cleans up
-4. Scheduler uses APScheduler with cron triggers to run projects on schedule
+1. `get_jobs()` reads `jobs.json` for job configurations
+2. Config is validated via Pydantic models (`Config`, `JobConfig`, `ScheduleConfig`)
+3. `run_job()` invokes provider CLI with `/<skill>` command in target path (skills installed via openskills)
+4. Scheduler uses APScheduler with cron triggers to run jobs on schedule
 
 **Key modules:**
 
-- `runner.py` - Project discovery and execution (`get_projects`, `run_project`)
+- `runner.py` - Job loading and execution (`get_jobs`, `run_job`, `setup`)
 - `models.py` - Pydantic config validation with `extra="forbid"`
-- `scheduler.py` - APScheduler daemon with `run_project_n_times` wrapper
+- `scheduler.py` - APScheduler daemon with `run_job_n_times` wrapper
 - `cli.py` - CLI entry point via argparse
 
-**Skills structure:**
+**Configuration:**
 
-- `skills/<project>/config.json` - Project configuration (validated by Pydantic)
-- `skills/<project>/prompt.jinja` - Optional Jinja2 prompt template
-- `skills/<project>/SKILL.md` - Index of available skills
-- `skills/<project>/AGENTS.md` - README for agents
-- `skills/<project>/*.md` - Individual skill definitions with instructions for AI provider
+- `jobs.json` - Job definitions with skill references, target paths, providers, and schedules
+- Skills are installed globally via `openskills` from the configured `skills_repo`
 
 **Providers:** Configured in `PROVIDERS` dict in `runner.py`. Currently supports `claude` and `gemini` CLI tools.

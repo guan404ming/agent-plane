@@ -1,9 +1,8 @@
 """Pydantic models for configuration."""
 
-from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class ScheduleConfig(BaseModel):
@@ -13,14 +12,22 @@ class ScheduleConfig(BaseModel):
     times: int = 1
 
 
-class ProjectConfig(BaseModel):
-    """Project configuration."""
+class JobConfig(BaseModel):
+    """Job configuration."""
 
     name: str
+    skill: str
     path: str
+    prompt: str = ""
     enabled: bool = False
     provider: Literal["claude", "gemini"] = "claude"
     schedule: ScheduleConfig
-    dir: Path = Field(default=None, exclude=True)
 
     model_config = {"extra": "forbid"}
+
+
+class Config(BaseModel):
+    """Top-level configuration."""
+
+    skills_repo: str = "guan404ming/claude-code-skills"
+    jobs: list[JobConfig]

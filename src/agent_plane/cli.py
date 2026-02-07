@@ -3,14 +3,15 @@
 import argparse
 import sys
 
-from agent_plane.runner import get_projects, run_project
+from agent_plane.runner import get_jobs, run_job, setup
 
 
 def main():
     parser = argparse.ArgumentParser(description="Run Agent Plane skills")
-    parser.add_argument("-p", "--project", help="Run specific project by name")
+    parser.add_argument("-p", "--project", help="Run specific job by name")
+    parser.add_argument("-l", "--list", action="store_true", help="List available jobs")
     parser.add_argument(
-        "-l", "--list", action="store_true", help="List available projects"
+        "--setup", action="store_true", help="Install skills via openskills"
     )
     parser.add_argument(
         "--dry-run",
@@ -19,20 +20,24 @@ def main():
     )
     args = parser.parse_args()
 
-    projects = get_projects()
+    if args.setup:
+        setup()
+        return
+
+    jobs = get_jobs()
 
     if args.list:
-        print("Available projects:")
-        for p in projects:
-            status = "enabled" if p.enabled else "disabled"
-            print(f"- {p.name} ({status}) [{p.provider}] {p.schedule.cron}")
+        print("Available jobs:")
+        for j in jobs:
+            status = "enabled" if j.enabled else "disabled"
+            print(f"- {j.name} /{j.skill} ({status}) [{j.provider}] {j.schedule.cron}")
         return
 
     if args.project:
-        projects = [p for p in projects if p.name == args.project]
-        if not projects:
-            print(f"Project '{args.project}' not found.")
+        jobs = [j for j in jobs if j.name == args.project]
+        if not jobs:
+            print(f"Job '{args.project}' not found.")
             sys.exit(1)
 
-    for project in projects:
-        run_project(project, dry_run=args.dry_run)
+    for job in jobs:
+        run_job(job, dry_run=args.dry_run)
