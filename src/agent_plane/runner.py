@@ -126,11 +126,9 @@ def run_job(config: JobConfig, dry_run: bool = False):
         status = (
             "completed" if proc.returncode == 0 else f"failed (exit {proc.returncode})"
         )
-        lines = log_file.read_text().splitlines()
-        log_head = "\n".join(lines[:10])
-        log_tail = "\n".join(lines[-10:])
+        log_content = log_file.read_text()
         send_email(
             email,
             subject=f"[agent-plane] {config.name} {status}",
-            body=f"Job: {config.name}\nSkill: /{config.skill}\nStatus: {status}\n\n--- Log (first 10 lines) ---\n{log_head}\n\n--- Log (last 10 lines) ---\n{log_tail}",
+            body=f"Job: {config.name}\nSkill: /{config.skill}\nStatus: {status}\n\n--- Log ---\n{log_content}",
         )
