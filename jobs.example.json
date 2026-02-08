@@ -22,7 +22,7 @@
     {
       "name": "tvm-ffi",
       "skill": "tvm-ffi-dev",
-      "path": "../tvm",
+      "path": "../tvm-ffi",
       "enabled": true,
       "schedule": { "cron": "0 6 * * *", "times": 1 }
     }
